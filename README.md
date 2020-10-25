@@ -1,6 +1,6 @@
 # Passion-Project
 ## onderzoeksvraag
-Hoe kan ik iemand zonder muzikale skills toch de ervaring van een instrument bezorgen aan de hand van een zelfspelende ukulele en het gebruik van de eigen stem?
+Hoe kan ik iemand zonder muzikale skills toch de ervaring van een instrument bezorgen aan de hand van een zelfspelende ukulele en het gebruik van de eigen stem via arduino en AI?
 ## De klant
 De klant is vooral ikzelf, omdat ik zelf al lang een instrument wil kunnen bespelen maar er het muziekale talent, noch het geduld voor heb.
 ## Core Project Statement
