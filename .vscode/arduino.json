@@ -1,0 +1,7 @@
+{
+    "sketch": "Sweep.ino",
+    "port": "/dev/tty.usbmodem14201",
+    "programmer": "AVR ISP",
+    "board": "arduino:avr:mega",
+    "configuration": "cpu=atmega2560"
+}
