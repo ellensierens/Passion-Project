@@ -1,5 +1,5 @@
 {
-    "sketch": "Sweep.ino",
+    "sketch": "uke.ino",
     "port": "/dev/tty.usbmodem14201",
     "programmer": "AVR ISP",
     "board": "arduino:avr:mega",
