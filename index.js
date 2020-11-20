@@ -50,17 +50,17 @@ function setup() {
   mic = new p5.AudioIn();
   mic.start(startPitch);
 
-  buttonStart = createButton('click me');
-  buttonStart.position(19, 19);
-  buttonStart.mousePressed(buttonClickedStart);
+//   buttonStart = createButton('click me');
+//   buttonStart.position(19, 19);
+//   buttonStart.mousePressed(buttonClickedStart);
 
 //   const start = document.querySelector('.start')
 //   start.addEventListener("click", buttonClickedStart)
 }
 
-// function touchStarted() {
-//   getAudioContext().resume();
-// }
+function touchStarted() {
+  getAudioContext().resume();
+}
 
 function startPitch() {
   pitch = ml5.pitchDetection(model_url, audioContext, mic.stream, modelLoaded);
