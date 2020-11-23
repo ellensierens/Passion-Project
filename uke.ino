@@ -332,29 +332,44 @@ void pluckAFunction()
 
 void loop()
 {
-  delay(1000);
-  play("A");
-  delay(1000);
+  delay(500);
   play("G");
-  delay(1000);
+  delay(500);
+  play("A");
+  delay(500);
+  play("B");
+  delay(500);
+  play("G");
+  delay(500);
+  play("G");
+  delay(500);
+  play("A");
+  delay(500);
+  play("B");
+  delay(500);
+  play("G");
+  delay(500);
+  play("B");
+  delay(500);
   play("C");
-  delay(1000);
-  play("E");
-  delay(1000);
+    delay(500);
   play("D");
-  delay(1000);
-  play("F");
-  delay(1000);
-  play("D#");
+    delay(1000);
+  play("B");
+  delay(500);
+  play("C");
+    delay(500);
+  play("D");
+    delay(1000);
 
   // delay(1000);
   // fret2.write(135);
   // delay(1000);
   // fret4.write(135);
   //   delay(1000);
-  // fret2.write(90);
+  // fret1.write(45);
   //   delay(1000);
-  // fret2.write(135);
+  // fret3.write(45);
   //   delay(1000);
   // fret2.write(180);
   //    delay(1000);
