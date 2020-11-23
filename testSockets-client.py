@@ -36,6 +36,7 @@ def connect():
     while True: # Run forever
         if GPIO.input(10) == GPIO.HIGH:
             print("Button was pushed!")
+            sio.emit('my_message', {'response': 'key was pressed'})
     
 
 @sio.event
