@@ -5,14 +5,8 @@ from pynput.keyboard import Key, Listener
 
 sio = socketio.Client()
 
-# with Listener() as listener:
-#     listener.join()
+import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
 
-# def on_press(key):
-#     print("Key pressed")
-
-# def on_release(key):
-#     print("Key released")
 
 
 @sio.event
@@ -26,14 +20,22 @@ def connect():
     #             break  # finishing the loop
     #     except:
     #         break  # if user pressed a key other than the given key the loop will break
-    def on_press(key):
-        print("key pressed")
-        sio.emit('my_message', {'response': 'key was pressed'})
+    # def on_press(key):
+    #     print("key pressed")
+    #     sio.emit('my_message', {'response': 'key was pressed'})
 
-    # Collect events until released
-    with Listener(
-            on_press=on_press) as listener:
-        listener.join()
+    # # Collect events until released
+    # with Listener(
+    #         on_press=on_press) as listener:
+    #     listener.join()
+
+    GPIO.setwarnings(False) # Ignore warning for now
+    GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
+    GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Set pin 10 to be an input pin and set initial value to be pulled low (off)
+
+    while True: # Run forever
+    if GPIO.input(10) == GPIO.HIGH:
+        print("Button was pushed!")
     
 
 @sio.event

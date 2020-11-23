@@ -12,6 +12,7 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 
 
+
 model = hub.load("https://tfhub.dev/google/spice/2")
 
 fs = 16000  # Sample rate
