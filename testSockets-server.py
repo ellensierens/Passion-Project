@@ -1,5 +1,6 @@
 import eventlet
 import socketio
+import json
 
 #dependencies for model
 import tensorflow_hub as hub
@@ -14,6 +15,13 @@ from IPython.display import Audio, Javascript
 import music21
 import sounddevice as sd
 from scipy.io.wavfile import write
+
+#dependencies serial communication
+import serial
+import time
+
+arduino = serial.Serial('/dev/ttyACM0',9600)
+time.sleep(0.1) #wait for serial to open
 
 model = hub.load("https://tfhub.dev/google/spice/2")
 print('model is loaded')
@@ -262,6 +270,15 @@ def my_message(sid, data):
         # rendering the music score
     showScore(sc)
     print(best_notes_and_rests)
+    #json_notes = json.dumps(best_notes_and_rests)
+    #print(json_notes)
+
+    for note in best_notes_and_rests:
+        if arduino.isOpen():
+            cmd= note
+            arduino.write(cmd.encode())
+    
+
 
 @sio.event
 def disconnect(sid):
