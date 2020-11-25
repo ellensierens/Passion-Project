@@ -9,6 +9,11 @@
 
 #include <Servo.h>
 
+String nom = "Arduino";
+String msg;
+
+struct String incomingNotes[] = {};
+
 // aanmaken variabelen servo
 //plukken snaren
 Servo pluckG; // create servo object to control a servo
@@ -332,46 +337,36 @@ void pluckAFunction()
 
 void loop()
 {
-  delay(500);
-  play("G");
-  delay(500);
-  play("A");
-  delay(500);
-  play("B");
-  delay(500);
-  play("G");
-  delay(500);
-  play("G");
-  delay(500);
-  play("A");
-  delay(500);
-  play("B");
-  delay(500);
-  play("G");
-  delay(500);
-  play("B");
-  delay(500);
-  play("C");
-    delay(500);
-  play("D");
-    delay(1000);
-  play("B");
-  delay(500);
-  play("C");
-    delay(500);
-  play("D");
-    delay(1000);
+  readSerialPort();
 
-  // delay(1000);
-  // fret2.write(135);
-  // delay(1000);
-  // fret4.write(135);
-  //   delay(1000);
-  // fret1.write(45);
-  //   delay(1000);
-  // fret3.write(45);
-  //   delay(1000);
-  // fret2.write(180);
-  //    delay(1000);
-  // fret2.write(0);
+  if (msg != "") {
+     sendData();
+  }
+  delay(500);
+}
+
+void readSerialPort() {
+  msg = "";
+  if (Serial.available()) {
+    incomingNotes[0] = "";
+    delay(10);
+    while (Serial.available() > 0) {
+      msg = (char)Serial.read();
+      int size = sizeof(incomingNotes)/sizeof(incomingNotes[0]);
+      incomingNotes[size] = msg;
+
+    }
+    Serial.flush();
+  }
+}
+
+void sendData() {
+  //write data
+  Serial.print(nom);
+  Serial.print("received :");
+  for (int i = 0; i < sizeof(incomingNotes)/sizeof(incomingNotes[0]); i++)
+  {
+    Serial.println(incomingNotes[i]);
+  }
+  
 }

@@ -1,6 +1,6 @@
 {
     "sketch": "uke.ino",
-    "port": "/dev/tty.usbmodem14201",
+    "port": "/dev/tty.usbmodem14101",
     "programmer": "AVR ISP",
     "board": "arduino:avr:mega",
     "configuration": "cpu=atmega2560"
