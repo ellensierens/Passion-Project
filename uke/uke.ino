@@ -8,14 +8,9 @@
 */
 
 #include <Servo.h>
-#include <ArduinoJson.h>
 
 String nom = "Arduino";
 String msg;
-
-const size_t CAPACITY = JSON_ARRAY_SIZE(50);
-StaticJsonDocument<CAPACITY> doc;
-
 
 struct String incomingNotes[] = {};
 
