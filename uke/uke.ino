@@ -17,12 +17,6 @@ const size_t CAPACITY = JSON_ARRAY_SIZE(50);
 StaticJsonDocument<CAPACITY> doc;
 
 
-int new_splitter = -1;
-int old_splitter = -1;
-int counter = 0;
-String parsedNotes[20];
-
-
 struct String incomingNotes[] = {};
 
 // aanmaken variabelen servo
@@ -114,9 +108,9 @@ nootType searchNote(String notePlay)
   }
 }
 
-void spelen(String notePlay)
+void play(String notePlay)
 {
-  Serial.print("in de print functie");
+
   note = searchNote(notePlay);
   Serial.print(note.note);
   if (note.fret == 0)
@@ -351,8 +345,6 @@ void pluckAFunction()
 void loop()
 {
   readSerialPort();
-  //Serial.println(parsedNotes[0]);
-  
 }
 
 void readSerialPort() {
@@ -367,45 +359,59 @@ void readSerialPort() {
     Serial.flush();
     Serial.println(msg);
     //Serial.print(msg[1]);
+
+     int new_splitter = -1;
+     int old_splitter = -1;
+     int counter = 0;
+     String parsedNotes[20];
     
     for(int i = 0; i< msg.length(); i++) {
-      Serial.print("in for loop");
-      Serial.print(msg[i]);
+      //Serial.print("in for loop");
+      //Serial.print(msg[i]);
       if(msg[i] == ','){
-        Serial.println("found komma");
+        //Serial.println("found komma");
         if(new_splitter == -1){
-          Serial.println("eerste komma");
+          //Serial.println("eerste komma");
           new_splitter = i;
-          Serial.println(new_splitter);
+          //Serial.println(new_splitter);
           for(int i = 0; i< new_splitter; i++){
             parsedNotes[counter] += msg[i];
           }
-          Serial.println(parsedNotes[counter]);
+          //Serial.println(parsedNotes[counter]);
           
           counter ++;
         }else{
           old_splitter = new_splitter;
           new_splitter = i;
-          Serial.println(old_splitter);
-          Serial.println(new_splitter);
+          //Serial.println(old_splitter);
+          //Serial.println(new_splitter);
           for(int i = old_splitter+1; i< new_splitter; i++){
             parsedNotes[counter] += msg[i];
           }
-          Serial.println(parsedNotes[counter]);
+          //Serial.println(parsedNotes[counter]);
           counter ++;
-          Serial.println(counter);
+          //Serial.println(counter);
+
+          
+        }
+
+        //Serial.print(sizeof(parsedNotes) / sizeof(parsedNotes[0]));
+        for(int i = 0; sizeof(parsedNotes) / sizeof(parsedNotes[0]); i++){
+          if(parsedNotes[i] == "D3"){
+
+            play("D3");
+            delay(1000);
+          }
         }
       }
     }
-      if(counter >= 1){
-        Serial.print("in if voor spelen printen");
-        for(int i = 0; i<counter; i++){
-          //if(parsedNotes[i] == "D3"){
-            Serial.println("in for loop");
-            spelen(parsedNotes[i]);
-            delay(1000);
-          //}
-        } 
-  }
+
+
+    //A3,B3,A#3,G#3,A3,B3,G#3,A3,A#3,B3,G#3,G#3,A#3,B3,
+    //char json[100] = "{["A3", "B3", "A#3", "G#3", "A3", "B3", "G#3", "A3", "A#3", "B3", "G#3", "G#3", "A#3", "B3"]}";
+    //deserializeJson(doc, msg);
+    //JsonArray array = doc.as<JsonArray>;
+    //String noteIncoming = doc[0];
+    //Serial.print(array[1]);
   }
 }
