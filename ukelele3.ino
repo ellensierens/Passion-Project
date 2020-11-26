@@ -8,8 +8,6 @@
 
 #include <Servo.h>
 
-String nom = "Arduino";
-
 
 int new_splitter = -1;
 int old_splitter = -1;
