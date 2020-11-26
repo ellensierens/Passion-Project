@@ -12,12 +12,6 @@
 String nom = "Arduino";
 String msg;
 
-<<<<<<< HEAD
-const size_t CAPACITY = JSON_ARRAY_SIZE(50);
-StaticJsonDocument<CAPACITY> doc;
-
-=======
->>>>>>> d2de13b1f17d040f7fd882e4b180856a57e610db
 
 struct String incomingNotes[] = {};
 
@@ -365,11 +359,8 @@ void readSerialPort() {
      int new_splitter = -1;
      int old_splitter = -1;
      int counter = 0;
-<<<<<<< HEAD
-     String parsedNotes[20];
-=======
+
      String parsedNotes[100];
->>>>>>> d2de13b1f17d040f7fd882e4b180856a57e610db
     
     for(int i = 0; i< msg.length(); i++) {
       //Serial.print("in for loop");
@@ -400,20 +391,10 @@ void readSerialPort() {
 
           
         }
-<<<<<<< HEAD
 
-        //Serial.print(sizeof(parsedNotes) / sizeof(parsedNotes[0]));
-        for(int i = 0; sizeof(parsedNotes) / sizeof(parsedNotes[0]); i++){
-          if(parsedNotes[i] == "D3"){
-
-            play("D3");
-            delay(1000);
-=======
-        
         for(int i = 0; sizeof(parsedNotes) / sizeof(parsedNotes[0]); i++){
           if(parsedNotes[i] == "D3"){
             play("D3");
->>>>>>> d2de13b1f17d040f7fd882e4b180856a57e610db
           }
         }
       }
