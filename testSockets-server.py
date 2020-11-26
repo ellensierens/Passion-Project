@@ -270,12 +270,12 @@ def my_message(sid, data):
         # rendering the music score
     showScore(sc)
     print(best_notes_and_rests)
-    #json_notes = json.dumps(best_notes_and_rests)
-    #print(json_notes)
+    json_notes = json.dumps(best_notes_and_rests)
+    print(json_notes)
 
     for note in best_notes_and_rests:
         if arduino.isOpen():
-            cmd= note
+            cmd= note + ","
             arduino.write(cmd.encode())
     
 

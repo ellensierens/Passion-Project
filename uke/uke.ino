@@ -8,9 +8,14 @@
 */
 
 #include <Servo.h>
+#include <ArduinoJson.h>
 
 String nom = "Arduino";
 String msg;
+
+const size_t CAPACITY = JSON_ARRAY_SIZE(50);
+StaticJsonDocument<CAPACITY> doc;
+
 
 struct String incomingNotes[] = {};
 
@@ -43,7 +48,7 @@ struct nootType
 
 nootType note;
 
-struct nootType notes[] = {{"A", 4, 0}, {"B", 1, 4}, {"C", 2, 0}, {"D", 2, 2}, {"E", 3, 0}, {"F", 3, 1}, {"G", 1, 0}, {"Ab", 3, 4}, {"A#", 4, 1}, {"Bb", 4, 1}, {"C#", 4, 4}, {"Db", 4, 4}, {"D#", 2, 3}, {"Eb", 2, 3}, {"F#", 3, 2}, {"Gb", 3, 2}, {"G#", 3, 4}};
+struct nootType notes[] = {{"A3", 4, 0}, {"B3", 1, 4}, {"C3", 2, 0}, {"D3", 2, 2}, {"E3", 3, 0}, {"F3", 3, 1}, {"G3", 1, 0}, {"Ab", 3, 4}, {"A#3", 4, 1}, {"Bb", 4, 1}, {"C#3", 4, 4}, {"Db", 4, 4}, {"D#3", 2, 3}, {"Eb", 2, 3}, {"F#3", 3, 2}, {"Gb", 3, 2}, {"G#3", 3, 4}};
 
 int posG = 0;
 int posA = 0;
@@ -57,6 +62,7 @@ void setup()
 
   Serial.begin(9600);
   Serial.print("setup");
+
   // attach servos to pin
   pluckG.attach(4);
   pluckC.attach(5);
@@ -86,6 +92,7 @@ void setup()
   delay(1000);
   fret4.write(180);
   delay(1000);
+  
 }
 
 nootType searchNote(String notePlay)
@@ -338,35 +345,70 @@ void pluckAFunction()
 void loop()
 {
   readSerialPort();
-
-  if (msg != "") {
-     sendData();
-  }
-  delay(500);
 }
 
 void readSerialPort() {
-  msg = "";
-  if (Serial.available()) {
+  
+  if (Serial.available()>0) {
+    msg = "";
     incomingNotes[0] = "";
-    delay(10);
+    delay(1000);
     while (Serial.available() > 0) {
-      msg = (char)Serial.read();
-      int size = sizeof(incomingNotes)/sizeof(incomingNotes[0]);
-      incomingNotes[size] = msg;
-
+      msg += (char)Serial.read();
     }
     Serial.flush();
-  }
-}
+    Serial.println(msg);
+    //Serial.print(msg[1]);
 
-void sendData() {
-  //write data
-  Serial.print(nom);
-  Serial.print("received :");
-  for (int i = 0; i < sizeof(incomingNotes)/sizeof(incomingNotes[0]); i++)
-  {
-    Serial.println(incomingNotes[i]);
+     int new_splitter = -1;
+     int old_splitter = -1;
+     int counter = 0;
+     String parsedNotes[100];
+    
+    for(int i = 0; i< msg.length(); i++) {
+      //Serial.print("in for loop");
+      //Serial.print(msg[i]);
+      if(msg[i] == ','){
+        //Serial.println("found komma");
+        if(new_splitter == -1){
+          //Serial.println("eerste komma");
+          new_splitter = i;
+          //Serial.println(new_splitter);
+          for(int i = 0; i< new_splitter; i++){
+            parsedNotes[counter] += msg[i];
+          }
+          //Serial.println(parsedNotes[counter]);
+          
+          counter ++;
+        }else{
+          old_splitter = new_splitter;
+          new_splitter = i;
+          //Serial.println(old_splitter);
+          //Serial.println(new_splitter);
+          for(int i = old_splitter+1; i< new_splitter; i++){
+            parsedNotes[counter] += msg[i];
+          }
+          //Serial.println(parsedNotes[counter]);
+          counter ++;
+          //Serial.println(counter);
+
+          
+        }
+        
+        for(int i = 0; sizeof(parsedNotes) / sizeof(parsedNotes[0]); i++){
+          if(parsedNotes[i] == "D3"){
+            play("D3");
+          }
+        }
+      }
+    }
+
+
+    //A3,B3,A#3,G#3,A3,B3,G#3,A3,A#3,B3,G#3,G#3,A#3,B3,
+    //char json[100] = "{["A3", "B3", "A#3", "G#3", "A3", "B3", "G#3", "A3", "A#3", "B3", "G#3", "G#3", "A#3", "B3"]}";
+    //deserializeJson(doc, msg);
+    //JsonArray array = doc.as<JsonArray>;
+    //String noteIncoming = doc[0];
+    //Serial.print(array[1]);
   }
-  
 }
