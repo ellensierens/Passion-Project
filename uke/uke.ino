@@ -12,6 +12,7 @@
 String nom = "Arduino";
 String msg;
 
+
 struct String incomingNotes[] = {};
 
 // aanmaken variabelen servo
