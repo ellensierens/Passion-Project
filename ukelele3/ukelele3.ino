@@ -116,49 +116,34 @@ void spelen(String notePlay)
   Serial.println("Preparing... " + notePlay);
   note = searchNote(notePlay);
 
-  Serial.println("note to play: " +note.note + " string: " + note.snaar + " fret: " + note.fret);
+  Serial.println("note to play: " +note.note + " string: " + note.snaar + " fret: " + note.fret); 
+  // spelen open snaren 
   if (note.fret == 0)
   {
+    fret1.write(0);
+    fret2.write(180);
+    fret3.write(0);
+    fret4.write(180);
+    delay(1000);
     if (note.snaar == 1)
     {
-      fret1.write(0);
-      fret2.write(180);
-      fret3.write(0);
-      fret4.write(180);
-      delay(1000);
       pluckGFunction();
     }
     else if (note.snaar == 2)
     {
-      fret1.write(0);
-      fret2.write(180);
-      fret3.write(0);
-      fret4.write(180);
-      delay(1000);
       pluckCFunction();
     }
     else if (note.snaar == 3)
     {
-      fret1.write(0);
-      fret2.write(180);
-      fret3.write(0);
-      fret4.write(180);
-      delay(1000);
       pluckEFunction();
     }
     else if (note.snaar == 4)
     {
-      fret1.write(0);
-      fret2.write(180);
-      fret3.write(0);
-      fret4.write(180);
-      delay(1000);
       pluckAFunction();
     }
   }
-  else
-
-      if (note.fret == 1)
+  else if (note.fret == 1)
+  // spelen noten op fret 1
   {
     if (note.snaar == 1)
     {
@@ -168,19 +153,19 @@ void spelen(String notePlay)
     }
     else if (note.snaar == 2)
     {
-      fret2.write(90);
+      fret1.write(90);
       delay(1000);
       pluckCFunction();
     }
     else if (note.snaar == 3)
     {
-      fret3.write(135);
+      fret1.write(135);
       delay(1000);
       pluckEFunction();
     }
     else if (note.snaar == 4)
     {
-      fret4.write(180);
+      fret1.write(180);
       delay(1000);
       pluckAFunction();
     }
@@ -191,7 +176,7 @@ void spelen(String notePlay)
   {
     if (note.snaar == 1)
     {
-      fret1.write(135);
+      fret2.write(135);
       delay(1000);
       pluckGFunction();
     }
@@ -203,13 +188,13 @@ void spelen(String notePlay)
     }
     else if (note.snaar == 3)
     {
-      fret3.write(45);
+      fret2.write(45);
       delay(1000);
       pluckEFunction();
     }
     else if (note.snaar == 4)
     {
-      fret4.write(0);
+      fret2.write(0);
       delay(1000);
       pluckAFunction();
     }
@@ -220,13 +205,13 @@ void spelen(String notePlay)
   {
     if (note.snaar == 1)
     {
-      fret1.write(45);
+      fret3.write(45);
       delay(1000);
       pluckGFunction();
     }
     else if (note.snaar == 2)
     {
-      fret2.write(90);
+      fret3.write(90);
       delay(1000);
       pluckCFunction();
     }
@@ -238,7 +223,7 @@ void spelen(String notePlay)
     }
     else if (note.snaar == 4)
     {
-      fret4.write(180);
+      fret3.write(180);
       delay(1000);
       pluckAFunction();
     }
@@ -249,19 +234,19 @@ void spelen(String notePlay)
   {
     if (note.snaar == 1)
     {
-      fret1.write(135);
+      fret4.write(135);
       delay(1000);
       pluckGFunction();
     }
     else if (note.snaar == 2)
     {
-      fret2.write(90);
+      fret4.write(90);
       delay(1000);
       pluckCFunction();
     }
     else if (note.snaar == 3)
     {
-      fret3.write(45);
+      fret4.write(45);
       delay(1000);
       pluckEFunction();
     }
