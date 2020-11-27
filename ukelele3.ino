@@ -46,7 +46,7 @@ struct nootType
 
 nootType note;
 
-struct nootType notes[] = {{"A4", 4, 0}, {"B4", 1, 4}, {"C4", 2, 0}, {"D4", 2, 2}, {"E4", 3, 0}, {"F4", 3, 1}, {"G4", 1, 0}, {"A4", 3, 4}, {"A#4", 4, 1}, {"C#4", 4, 4}, {"D#4", 2, 3}, {"F#4", 3, 2}, {"G#4", 3, 4}, {"C5", 4, 3},};
+struct nootType notes[] = {{"A4", 4, 0}, {"B4", 1, 4}, {"C4", 2, 0}, {"D4", 2, 2}, {"E4", 3, 0}, {"F4", 3, 1}, {"G4", 1, 0}, {"A4", 3, 4}, {"A#4", 4, 1}, {"C#4", 4, 4}, {"D#4", 2, 3}, {"F#4", 3, 2}, {"G#4", 3, 4}, {"C5", 4, 3}, {"Rest", 0, 0}};
 
 int posG = 0;
 int posA = 0;
@@ -110,6 +110,9 @@ void spelen(String notePlay)
   Serial.print("in de print functie");
   note = searchNote(notePlay);
   Serial.print(note.note);
+  if(note.note == "Rest"){
+    delay(1000);
+  }
   if (note.fret == 0)
   {
     if (note.snaar == 1)
