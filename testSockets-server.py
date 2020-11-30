@@ -20,16 +20,18 @@ from scipy.io.wavfile import write
 import serial
 import time
 
+sio = socketio.Server()
+app = socketio.WSGIApp(sio, static_files={
+    '/': {'content_type': 'text/html', 'filename': 'index.html'}
+})
+
 arduino = serial.Serial('/dev/ttyACM0',9600)
 time.sleep(0.1) #wait for serial to open
 
 model = hub.load("https://tfhub.dev/google/spice/2")
 print('model is loaded')
 
-sio = socketio.Server()
-app = socketio.WSGIApp(sio, static_files={
-    '/': {'content_type': 'text/html', 'filename': 'index.html'}
-})
+#exec(open('./testSockets-client.py').read())
 
 @sio.event
 def connect(sid, environ):
@@ -208,6 +210,10 @@ def my_message(sid, data):
     # Adjust the speed to match the actual singing.
     bpm = 60 * 60 / best_predictions_per_note
     print ('bpm: ', bpm)
+    #serieel communiceren bpm
+    if arduino.isOpen():
+        arduino.write((str(bpm) +";").encode())
+
     a = music21.tempo.MetronomeMark(number=bpm)
     sc.insert(0,a)
 
