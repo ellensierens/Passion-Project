@@ -9,15 +9,17 @@ sio = socketio.Client()
 import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
 
 GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
-GPIO.setup(18,GPIO.OUT)
+GPIO.output(18, GPIO.HIGH)
 GPIO.setwarnings(False) # Ignore warning for now
 GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Set pin 10 to be an input pin and set initial value to be pulled low (off)
 
 @sio.event
 def connect():
     print('connection established')
-
     GPIO.output(18, GPIO.HIGH)
+    sleep(.5)
+    GPIO.output(18, GPIO.LOW)
+    #put light on when connected
     # while True:  # making a loop
     #     try:  # used try so that if user pressed other than the given key error will not be shown
     #         if keyboard.is_pressed('q'):  # if key 'q' is pressed 
@@ -53,6 +55,7 @@ def my_message(data):
 @sio.event
 def disconnect():
     print('disconnected from server')
+    #put light out when disconnected
 
 connected = False
 while not connected:

@@ -8,7 +8,6 @@
 
 #include <Servo.h>
 
-
 int new_splitter = -1;
 int old_splitter = -1;
 int counter = 0;
@@ -16,8 +15,7 @@ String parsedNotes[20];
 int teller = 0;
 
 String bpmStr;
-int bpm; 
-
+int bpm;
 
 struct String incomingNotes[] = {};
 
@@ -104,13 +102,15 @@ nootType searchNote(String notePlay)
   for (int i = 0; i < sizeof(notes) / sizeof(notes[0]); i++)
   {
     //Serial.print(typeof(notes[i]))
-    Serial.println("searching... " +notes[i].note + i);
+    Serial.println("searching... " + notes[i].note + i);
     if (notes[i].note == notePlay)
     {
-      
+
       Serial.println("Aha! I found it!");
       return notes[i];
-    }else if(i == sizeof(notes) / sizeof(notes[0])-1){
+    }
+    else if (i == sizeof(notes) / sizeof(notes[0]) - 1)
+    {
       return {notePlay, 0, 0};
     }
   }
@@ -121,11 +121,12 @@ void spelen(String notePlay)
   Serial.println("Preparing... " + notePlay);
   note = searchNote(notePlay);
 
-  Serial.println("note to play: " +note.note + " string: " + note.snaar + " fret: " + note.fret); 
-    if(note.note == "Rest"){
+  Serial.println("note to play: " + note.note + " string: " + note.snaar + " fret: " + note.fret);
+  if (note.note == "Rest")
+  {
     delay(draaiDelay);
   }
-  // spelen open snaren   
+  // spelen open snaren
   if (note.fret == 0)
   {
     fret1.write(0);
@@ -264,7 +265,9 @@ void spelen(String notePlay)
       delay(draaiDelay);
       pluckAFunction();
     }
-  }else{
+  }
+  else
+  {
     Serial.print("errorrrrrrrr does not compute!!!!!!!" + note.note);
   }
 }
@@ -346,86 +349,104 @@ void loop()
   //Serial.println("gestart");
   readSerialPort();
   //Serial.println(parsedNotes[0]);
-  
 }
 
-String leesVanPi() {
-  String msg="";
-  if (Serial.available()>0) {
+String leesVanPi()
+{
+  String msg = "";
+  if (Serial.available() > 0)
+  {
     // incomingNotes[0] = "";
     delay(1000); //wait for all data to come throug; serial continues through delay
-    while (Serial.available() > 0) {
+    while (Serial.available() > 0)
+    {
       msg += (char)Serial.read();
     }
     // Serial.flush();
     // Serial.println(msg);
     clearParsedNotes(); //clear the parsednotes array before returning new raw values
     return msg;
-}
+  }
 }
 
-int zetOmNaarArray(String omTeZetten) {
+int zetOmNaarArray(String omTeZetten)
+{
   Serial.println("converting...");
   bool bpmSaved = false;
-  for(int i = 0; i<omTeZetten.length(); i++) {
+  for (int i = 0; i < omTeZetten.length(); i++)
+  {
     // print de letter
     //Serial.println("dit moet ik omzetten: "+omTeZetten[i]);
     //delay(100);
     // controleer of het een komma is
-    if(omTeZetten[i] == ';'){
+    if (omTeZetten[i] == ';')
+    {
       bpmSaved = true;
-      } else
-    if(omTeZetten[i] == ','){
+    }
+    else if (omTeZetten[i] == ',')
+    {
       teller++;
-      }
-    else {
-      if(bpmSaved == false){
+    }
+    else
+    {
+      if (bpmSaved == false)
+      {
         //Serial.print("saved: " + bpmSaved);
         bpmStr += omTeZetten[i];
-      } else if(bpmSaved == true){
-        //Serial.print("saved: " + bpmSaved);
-      parsedNotes[teller] += omTeZetten[i];
       }
-
+      else if (bpmSaved == true)
+      {
+        //Serial.print("saved: " + bpmSaved);
+        parsedNotes[teller] += omTeZetten[i];
+      }
     }
   }
-  for(int i = 0; i<teller; i++) {
-    Serial.println("converted: " +parsedNotes[i]);
+  for (int i = 0; i < teller; i++)
+  {
+    Serial.println("converted: " + parsedNotes[i]);
   }
   return teller;
 }
 
-void readSerialPort() {
+void readSerialPort()
+{
   //Serial.print("listening for serial port");
-  String gelezen="";
-  gelezen=leesVanPi();
+  String gelezen = "";
+  gelezen = leesVanPi();
   //Serial.print(msg[1]);
-  if (gelezen != "") {
-    Serial.println("serial: " +gelezen);
-    int aantal=zetOmNaarArray(gelezen);
+  if (gelezen != "")
+  {
+    Serial.println("serial: " + gelezen);
+    int aantal = zetOmNaarArray(gelezen);
     //Serial.print("bpm: "+bpmStr);
     bpm = bpmStr.toInt();
-    Serial.print((bpm/60)*1000-600);
+    Serial.print((bpm / 60) * 1000 - 600);
     //Serial.println("bpm int :" + (bpm/60)*1000-600);
-    for(int i = 0; i<teller; i++){
-          //if(parsedNotes[i] == "D3"){
-            //delay(100);
-            Serial.println("ready to play: " +parsedNotes[i]);
-            spelen(parsedNotes[i]);
-            delay((bpm/60)*1000-600);
-            //parsedNotes[i] = ""; //maak functie clearArray(arr) en gebruik voor vernieuwen
-          //}
-        } 
+    for (int i = 0; i < teller; i++)
+    {
+      //if(parsedNotes[i] == "D3"){
+      //delay(100);
+      Serial.println("ready to play: " + parsedNotes[i]);
+      spelen(parsedNotes[i]);
+      if ((bpm / 60) * 1000 - 600 > 0)
+      {
+        delay((bpm / 60) * 1000 - 600);
+      }
+      //parsedNotes[i] = ""; //maak functie clearArray(arr) en gebruik voor vernieuwen
+      //}
+    }
   }
   //if(teller>= 1){
-    //Serial.print("in if voor spelen printen");
-     
+  //Serial.print("in if voor spelen printen");
+
   //}
 }
 
-void clearParsedNotes(){
-  for (int i=0; i<teller; i++) {
+void clearParsedNotes()
+{
+  for (int i = 0; i < teller; i++)
+  {
     parsedNotes[i] = "";
-  }  
+  }
   teller = 0;
 }
