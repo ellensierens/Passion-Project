@@ -20,6 +20,12 @@ from scipy.io.wavfile import write
 import serial
 import time
 
+import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
+
+GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
+GPIO.setup(18,GPIO.OUT)
+GPIO.setwarnings(False) # Ignore warning for now
+
 sio = socketio.Server()
 app = socketio.WSGIApp(sio, static_files={
     '/': {'content_type': 'text/html', 'filename': 'index.html'}
@@ -44,9 +50,12 @@ def my_message(sid, data):
     fs = 16000  # Sample rate
     seconds = 10  # Duration of recording
 
+    GPIO.output(18, GPIO.HIGH)
     myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
     sd.wait()  # Wait until recording is finished
+    GPIO.output(18, GPIO.LOW)
     write('recorded_audio.wav', fs, myrecording)  # Save as WAV file 
+
 
     print(myrecording)
 
