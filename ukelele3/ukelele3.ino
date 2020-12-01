@@ -63,6 +63,7 @@ void setup()
 {
 
   Serial.begin(9600);
+  Serial1.begin(9600);
   Serial.print("setup");
 
   // attach servos to pin
@@ -421,6 +422,8 @@ void readSerialPort()
     //Serial.print("bpm: "+bpmStr);
     bpm = bpmStr.toInt();
     Serial.print((bpm / 60) * 1000 - 600);
+    //char myString[4] = "sing";
+    Serial1.write("sing");
     //Serial.println("bpm int :" + (bpm/60)*1000-600);
     for (int i = 0; i < teller; i++)
     {
@@ -428,6 +431,9 @@ void readSerialPort()
       //delay(100);
       Serial.println("ready to play: " + parsedNotes[i]);
       spelen(parsedNotes[i]);
+      if(i == teller-1){
+      Serial1.write("stop");
+      }
       if ((bpm / 60) * 1000 - 600 > 0)
       {
         delay((bpm / 60) * 1000 - 600);

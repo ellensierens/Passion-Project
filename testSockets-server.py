@@ -23,7 +23,7 @@ import time
 import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
 
 GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
-GPIO.setup(18,GPIO.OUT)
+GPIO.setup(18, GPIO.OUT)
 GPIO.setwarnings(False) # Ignore warning for now
 
 sio = socketio.Server()
@@ -34,7 +34,9 @@ app = socketio.WSGIApp(sio, static_files={
 arduino = serial.Serial('/dev/ttyACM0',9600)
 time.sleep(0.1) #wait for serial to open
 
-print("going to load model")
+uno = serial.Serial('/dev/ttyACM1',9600)
+time.sleep(0.1) #wait for serial to open
+
 model = hub.load("https://tfhub.dev/google/spice/2")
 print('model is loaded')
 
@@ -43,6 +45,11 @@ print('model is loaded')
 @sio.event
 def connect(sid, environ):
     print('connect ', sid)
+    if uno.isOpen():
+        print("connected")
+        msg = "connected"
+        uno.write(msg.encode())
+
 
 @sio.event
 def my_message(sid, data):
@@ -52,8 +59,13 @@ def my_message(sid, data):
 
     GPIO.output(18, GPIO.HIGH)
     myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
+    print("recording")
     sd.wait()  # Wait until recording is finished
     GPIO.output(18, GPIO.LOW)
+    if uno.isOpen():
+        print("inference")
+        msg = "inference"
+        uno.write(msg.encode())
     write('recorded_audio.wav', fs, myrecording)  # Save as WAV file 
 
 

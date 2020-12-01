@@ -5,43 +5,313 @@
 
     int BPM = 400;
 
+    bool start = true;
+    bool socketConnected = false;
+    bool hasBeenConnected = false;
+    bool inference = false;
+    bool sing = false;
+
     CRGB leds[NUM_LEDS];
 
     void setup() { 
-       FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-       FastLED.addLeds<NEOPIXEL, DATA_PIN2>(leds, NUM_LEDS);
+      Serial.begin(9600);
+      Serial1.begin(9600);
+      
+      FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+      FastLED.addLeds<NEOPIXEL, DATA_PIN2>(leds, NUM_LEDS);
+
+      FastLED.setBrightness(50);
    }
 
    void loop() { 
-    spelen_1();
-        delay(BPM); 
-        spelen_2();
-        delay(BPM);
-        spelen_3();
-        delay(BPM);
-        spelen_4();
-        delay(BPM);
-        spelen_3();
-        delay(BPM);
-        spelen_2();
-        delay(BPM);
 
-    laden_1();
-        delay(BPM); 
-        laden_2();
-        delay(BPM);
-        laden_3();
-        delay(BPM);
-        laden_4();
-        delay(BPM);
-        laden_3();
-        delay(BPM);
-        laden_2();
-        delay(BPM);
-
-        fout();
-        delay(BPM*2);
+    readSerialPort();
+    
+    if(start){
+      laden_1();
+      delay(BPM);
+      laden_2();
+      delay(BPM);
+      laden_3();
+      delay(BPM);
+      laden_4();
+      delay(BPM);
+      laden_5();
+      delay(BPM);
+      laden_6();
+      delay(BPM);
+      laden_7();
+      delay(BPM);
+      laden_8();
+      delay(BPM);
+      laden_9();
+      delay(BPM);
+      laden_10();
+      delay(BPM);
+      laden_11();
+      delay(BPM);
+      laden_12();
+      delay(BPM);
+    } else if(socketConnected) {
+      kijken_3();
+    } else if(inference){
+      kijken_1();
+      delay(BPM);
+      kijken_2();
+      delay(BPM);
+      kijken_3();
+      delay(BPM);
+      kijken_4();
+      delay(BPM);
+      kijken_3();
+      delay(BPM);
+      kijken_2();
+      delay(BPM);
+    }else if (sing){
+      spelen_1();
+      delay(BPM);
+      spelen_2();
+      delay(BPM);
+      spelen_3();
+      delay(BPM);
+      spelen_4();
+      delay(BPM);
+      spelen_3();
+      delay(BPM);
+      spelen_2();
+      delay(BPM);
     }
+   }
+
+   void readSerialPort (){
+    //Serial.println("reading");
+    String msg ="";
+    if(Serial.available()>0){
+      delay(10);
+      while(Serial.available()>0){
+        msg += (char)Serial.read();
+      }
+    }
+    if(Serial1.available()>0){
+      delay(10);
+      while(Serial1.available()>0){
+        msg += (char)Serial1.read();
+      }
+    }
+          Serial.println(msg);
+     if(msg == "connected" && hasBeenConnected == false){
+      start = false;
+      socketConnected = true;
+      hasBeenConnected = true;
+      
+     } else if(msg == "inference"){
+      socketConnected = false;
+      inference = true;
+     } else if(msg == "sing"){
+     inference = false;
+     sing = true;
+     }
+     else if(msg == "stop"){
+     socketConnected = true;
+     sing = false;
+     }
+   }
+
+    void laden_1 () {
+      FastLED.clear(); 
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[26] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+    void laden_2 () {
+      FastLED.clear(); 
+        leds[18] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[26] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+    void laden_3 () {
+      FastLED.clear(); 
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[26] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+        void laden_4 () {
+      FastLED.clear(); 
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[26] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+        void laden_5 () {
+      FastLED.clear(); 
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[26] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+
+        void laden_6 () {
+      FastLED.clear(); 
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[26] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+        void laden_7 () {
+      FastLED.clear(); 
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[26] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+
+        void laden_8 () {
+      FastLED.clear(); 
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[26] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+        void laden_9 () {
+      FastLED.clear(); 
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[26] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+        void laden_10 () {
+      FastLED.clear(); 
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[26] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+    
+        void laden_11 () {
+      FastLED.clear(); 
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[42] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+
+        void laden_12 () {
+      FastLED.clear(); 
+        leds[34] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[42] = CRGB::White;
+        
+        FastLED.show(); 
+    }
+    
 
     void spelen_1 () {
       FastLED.clear(); 
@@ -85,7 +355,7 @@
         FastLED.show(); 
     }
 
-        void laden_1 () {
+        void kijken_1 () {
       FastLED.clear(); 
         leds[2] = CRGB::White;
         leds[3] = CRGB::White;
@@ -144,7 +414,7 @@
     }
 
     
-        void laden_2 () {
+        void kijken_2 () {
       FastLED.clear(); 
         leds[2] = CRGB::White;
         leds[3] = CRGB::White;
@@ -202,7 +472,7 @@
         FastLED.show(); 
     }
 
-            void laden_3 () {
+            void kijken_3 () {
       FastLED.clear(); 
         leds[2] = CRGB::White;
         leds[3] = CRGB::White;
@@ -260,7 +530,7 @@
         FastLED.show(); 
     }
 
-                void laden_4 () {
+                void kijken_4 () {
       FastLED.clear(); 
         leds[2] = CRGB::White;
         leds[3] = CRGB::White;
