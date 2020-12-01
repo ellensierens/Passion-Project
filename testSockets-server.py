@@ -28,6 +28,7 @@ app = socketio.WSGIApp(sio, static_files={
 arduino = serial.Serial('/dev/ttyACM0',9600)
 time.sleep(0.1) #wait for serial to open
 
+print("going to load model")
 model = hub.load("https://tfhub.dev/google/spice/2")
 print('model is loaded')
 
