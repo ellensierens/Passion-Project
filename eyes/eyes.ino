@@ -20,7 +20,7 @@
       FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
       FastLED.addLeds<NEOPIXEL, DATA_PIN2>(leds, NUM_LEDS);
 
-      FastLED.setBrightness(50);
+      FastLED.setBrightness(10);
    }
 
    void loop() { 
@@ -53,7 +53,18 @@
       laden_12();
       delay(BPM);
     } else if(socketConnected) {
-      kijken_3();
+      open_1();
+      delay(BPM);
+      open_2();
+      delay(BPM);
+      open_3();
+      delay(BPM);
+      open_4();
+      delay(BPM*3);
+      open_3();
+      delay(BPM);
+      open_2();
+      delay(BPM);
     } else if(inference){
       kijken_1();
       delay(BPM);
@@ -103,17 +114,29 @@
       start = false;
       socketConnected = true;
       hasBeenConnected = true;
+    
+      inference = false;
+      sing = false;
       
      } else if(msg == "inference"){
       socketConnected = false;
       inference = true;
+
+      start = false;
+      sing = false;
      } else if(msg == "sing"){
      inference = false;
      sing = true;
+
+     start = false;
+     socketConnected = false;
      }
      else if(msg == "stop"){
      socketConnected = true;
      sing = false;
+
+     start = false;
+      inference = false;
      }
    }
 
@@ -354,6 +377,160 @@
         
         FastLED.show(); 
     }
+
+     void open_1 () {
+      FastLED.clear(); 
+        leds[24] = CRGB::White;
+        leds[25] = CRGB::White;
+        leds[26] = CRGB::White;
+        leds[27] = CRGB::White;
+        leds[28] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[30] = CRGB::White;
+        leds[31] = CRGB::White;
+        leds[32] = CRGB::White;
+        leds[33] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[35] = CRGB::White;
+        leds[36] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[38] = CRGB::White;
+        leds[39] = CRGB::White;
+        FastLED.show(); 
+    }
+
+     void open_2 () {
+      FastLED.clear(); 
+        leds[16] = CRGB::White;
+        leds[17] = CRGB::White;
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[22] = CRGB::White;
+        leds[23] = CRGB::White;
+        leds[24] = CRGB::White;
+        leds[25] = CRGB::White;
+        leds[26] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[30] = CRGB::White;
+        leds[31] = CRGB::White;
+        leds[32] = CRGB::White;
+        leds[33] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[38] = CRGB::White;
+        leds[39] = CRGB::White;
+        leds[40] = CRGB::White;
+        leds[41] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[46] = CRGB::White;
+        leds[47] = CRGB::White;
+        FastLED.show(); 
+    }
+
+    void open_3 () {
+      FastLED.clear(); 
+        leds[9] = CRGB::White;
+        leds[10] = CRGB::White;
+        leds[11] = CRGB::White;
+        leds[12] = CRGB::White;
+        leds[13] = CRGB::White;
+        leds[14] = CRGB::White;
+        leds[16] = CRGB::White;
+        leds[17] = CRGB::White;
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[22] = CRGB::White;
+        leds[23] = CRGB::White;
+        leds[24] = CRGB::White;
+        leds[25] = CRGB::White;
+        leds[26] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[30] = CRGB::White;
+        leds[31] = CRGB::White;
+        leds[32] = CRGB::White;
+        leds[33] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[38] = CRGB::White;
+        leds[39] = CRGB::White;
+        leds[40] = CRGB::White;
+        leds[41] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[46] = CRGB::White;
+        leds[47] = CRGB::White;
+        leds[49] = CRGB::White;
+        leds[50] = CRGB::White;
+        leds[51] = CRGB::White;
+        leds[52] = CRGB::White;
+        leds[53] = CRGB::White;
+        leds[54] = CRGB::White;
+        FastLED.show(); 
+    }
+
+    void open_4 () {
+      FastLED.clear();
+      leds[2] = CRGB::White;
+        leds[3] = CRGB::White;
+        leds[4] = CRGB::White;
+        leds[5] = CRGB::White; 
+        leds[9] = CRGB::White;
+        leds[10] = CRGB::White;
+        leds[11] = CRGB::White;
+        leds[12] = CRGB::White;
+        leds[13] = CRGB::White;
+        leds[14] = CRGB::White;
+        leds[16] = CRGB::White;
+        leds[17] = CRGB::White;
+        leds[18] = CRGB::White;
+        leds[19] = CRGB::White;
+        leds[20] = CRGB::White;
+        leds[21] = CRGB::White;
+        leds[22] = CRGB::White;
+        leds[23] = CRGB::White;
+        leds[24] = CRGB::White;
+        leds[25] = CRGB::White;
+        leds[26] = CRGB::White;
+        leds[29] = CRGB::White;
+        leds[30] = CRGB::White;
+        leds[31] = CRGB::White;
+        leds[32] = CRGB::White;
+        leds[33] = CRGB::White;
+        leds[34] = CRGB::White;
+        leds[37] = CRGB::White;
+        leds[38] = CRGB::White;
+        leds[39] = CRGB::White;
+        leds[40] = CRGB::White;
+        leds[41] = CRGB::White;
+        leds[42] = CRGB::White;
+        leds[43] = CRGB::White;
+        leds[44] = CRGB::White;
+        leds[45] = CRGB::White;
+        leds[46] = CRGB::White;
+        leds[47] = CRGB::White;
+        leds[49] = CRGB::White;
+        leds[50] = CRGB::White;
+        leds[51] = CRGB::White;
+        leds[52] = CRGB::White;
+        leds[53] = CRGB::White;
+        leds[54] = CRGB::White;
+        leds[58] = CRGB::White;
+        leds[59] = CRGB::White;
+        leds[60] = CRGB::White;
+        leds[61] = CRGB::White;
+        FastLED.show(); 
+    }
+
+    
 
         void kijken_1 () {
       FastLED.clear(); 

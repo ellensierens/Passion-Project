@@ -15,7 +15,15 @@ String parsedNotes[20];
 int teller = 0;
 
 String bpmStr;
-int bpm;
+float bpm;
+
+int val;
+int amountReplays;
+int valPotReplay;
+int tempoChange;
+int valPotPitch;
+int pitchChange;
+int oldPitchChange;
 
 struct String incomingNotes[] = {};
 
@@ -48,7 +56,7 @@ struct nootType
 
 nootType note;
 
-struct nootType notes[] = {{"A3", 4, 0}, {"B3", 1, 4}, {"C3", 2, 0}, {"D3", 2, 2}, {"E3", 3, 0}, {"F3", 3, 1}, {"G3", 1, 0}, {"A#3", 4, 1}, {"C#3", 4, 4}, {"D#3", 2, 3}, {"F#3", 3, 2}, {"G#3", 3, 4}, {"C4", 4, 3}, {"Rest", 0, 0}};
+struct nootType notes[] = {{"C3", 2, 0}, {"C#3", 4, 4}, {"D3", 2, 2}, {"D#3", 2, 3}, {"E3", 3, 0}, {"F3", 3, 1}, {"F#3", 3, 2}, {"G3", 1, 0}, {"G#3", 3, 4}, {"A3", 4, 0}, {"A#3", 4, 1}, {"B3", 1, 4}, {"C4", 4, 3}, {"Rest", 0, 0}};
 
 int posG = 0;
 int posA = 0;
@@ -65,6 +73,16 @@ void setup()
   Serial.begin(9600);
   Serial1.begin(9600);
   Serial.print("setup");
+  //setup button
+  pinMode(10, INPUT);
+
+  val = 0;
+  amountReplays = 1;
+  valPotReplay = 0;
+  tempoChange = 0;
+  valPotPitch = 0;
+  pitchChange = 0;
+  oldPitchChange = 0;
 
   // attach servos to pin
   pluckG.attach(4);
@@ -125,7 +143,7 @@ void spelen(String notePlay)
   Serial.println("note to play: " + note.note + " string: " + note.snaar + " fret: " + note.fret);
   if (note.note == "Rest")
   {
-    delay(draaiDelay);
+    delay((((1/(bpm / 60)) * 1000) - 600) + tempoChange);
   }
   // spelen open snaren
   if (note.fret == 0)
@@ -155,6 +173,9 @@ void spelen(String notePlay)
   else if (note.fret == 1)
   // spelen noten op fret 1
   {
+    fret2.write(180);
+    fret3.write(0);
+    fret4.write(180);
     if (note.snaar == 1)
     {
       fret1.write(45);
@@ -184,6 +205,9 @@ void spelen(String notePlay)
 
       if (note.fret == 2)
   {
+    fret1.write(0);
+    fret3.write(0);
+    fret4.write(180);
     if (note.snaar == 1)
     {
       fret2.write(135);
@@ -213,6 +237,9 @@ void spelen(String notePlay)
 
       if (note.fret == 3)
   {
+    fret1.write(0);
+    fret2.write(180);
+    fret4.write(180);
     if (note.snaar == 1)
     {
       fret3.write(45);
@@ -242,6 +269,9 @@ void spelen(String notePlay)
 
       if (note.fret == 4)
   {
+    fret1.write(0);
+    fret2.write(180);
+    fret3.write(0);
     if (note.snaar == 1)
     {
       fret4.write(135);
@@ -350,6 +380,11 @@ void loop()
   //Serial.println("gestart");
   readSerialPort();
   //Serial.println(parsedNotes[0]);
+  val = digitalRead(10);
+  if(val == HIGH){
+    Serial.print("button pushed");
+    playReceivedNotes(pitchChange);
+  }
 }
 
 String leesVanPi()
@@ -374,6 +409,8 @@ int zetOmNaarArray(String omTeZetten)
 {
   Serial.println("converting...");
   bool bpmSaved = false;
+  bpmStr= "";
+  bpm=0;
   for (int i = 0; i < omTeZetten.length(); i++)
   {
     // print de letter
@@ -425,27 +462,73 @@ void readSerialPort()
     //char myString[4] = "sing";
     Serial1.write("sing");
     //Serial.println("bpm int :" + (bpm/60)*1000-600);
-    for (int i = 0; i < teller; i++)
-    {
-      //if(parsedNotes[i] == "D3"){
-      //delay(100);
-      Serial.println("ready to play: " + parsedNotes[i]);
-      spelen(parsedNotes[i]);
-      if(i == teller-1){
-      Serial1.write("stop");
-      }
-      if ((bpm / 60) * 1000 - 600 > 0)
-      {
-        delay((bpm / 60) * 1000 - 600);
-      }
-      //parsedNotes[i] = ""; //maak functie clearArray(arr) en gebruik voor vernieuwen
-      //}
-    }
+    playReceivedNotes(pitchChange);
   }
   //if(teller>= 1){
   //Serial.print("in if voor spelen printen");
 
   //}
+}
+
+void playReceivedNotes(int pitchChange){
+     Serial.print("tempoChange: ");
+     Serial.print((((1/(bpm / 60)) * 1000) - 600));
+
+
+     valPotReplay = analogRead(A0);
+    //Serial.println(valPotReplay);
+    amountReplays = map(valPotReplay, 0, 1023, 1, 10);
+    //Serial.println(amountReplays);
+    
+    tempoChange = analogRead(A1); 
+    //Serial.println(tempoChange);
+    
+    valPotPitch = analogRead(A2);
+    oldPitchChange = pitchChange;
+    pitchChange = map(valPotPitch, 0, 1023, 0, 12);
+    //int factor = pitchChange/12;
+
+    Serial.print("pitchChange new: ");
+    Serial.println(pitchChange);
+
+    Serial.print("extra delay: ");
+    Serial.println((((1/(bpm / 60)) * 1000) - 600));
+
+    Serial.print("bpm: ");
+    Serial.println(bpm);
+    
+    for(int t = 0; t<amountReplays; t++){
+            for (int i = 0; i < teller; i++)
+    {
+        for (int j = 0; j < sizeof(notes) / sizeof(notes[0]); j++){
+           //Serial.println("ready to play: " + parsedNotes[i]);
+           if(parsedNotes[i] == notes[j].note){
+           int pitch = (pitchChange + j) % 12 ;
+           Serial.print("pitch is: ");
+           Serial.println(pitch);
+           spelen(notes[pitch].note);
+           if ((((1/(bpm / 60)) * 1000) - 600) >= 0)
+           {                
+           Serial.print("tempoChange: ");
+           Serial.println((((1/(bpm / 60)) * 1000) - 600) + tempoChange);
+            delay((((1/(bpm / 60)) * 1000) - 600) + tempoChange);
+           }
+           break;
+           
+        }
+      }
+      //if(parsedNotes[i] == "D3"){
+      //delay(100);
+      //parsedNotes[i] = ""; //maak functie clearArray(arr) en gebruik voor vernieuwen
+      //}
+
+     }
+      if(t == amountReplays-1){
+      Serial1.write("stop");
+    }
+    }
+     
+
 }
 
 void clearParsedNotes()
