@@ -48,7 +48,7 @@ int offsetE = 5;
 int offsetA = -11;
 
 //opvullen notes array {noot, snaar nr, fret nr}
-//int notes[17][3] = {{A, 4, 0}, {B, 1, 4}, {"C", 2, 0}, {"D", 2, 2}, {"E", 3, 0}, {"F", 3, 1}, {"G", 1, 0}, {"Ab", 3, 4}, {"A#", 4, 1}, {"Bb", 4, 1}, {"C#", 4, 4}, {"Db", 4, 4}, {"D#", 2, 3}, {"Eb", 2, 3}, {"F#", 3, 2}, {"Gb", 3, 2}, {"G#", 3, 4}};
+//int notes[17][3] = {{A, 4, 0}, {B, 1, 4}, {"C", 2, 0}, {"D", 2, 2}, {"E", 3, 0}, {"F", 3, 1}, {"G", 1, 0}, {"Ab", 3, 4}, {"A#", 4, 1}, {"Bb", 4, 1}, {"C#", 4, 4}, {"Db", 4, 4}, {"D#", 2, 3}, {"Eb", 2, 3}, {"F#", 3, 2}, {"Gb", 3, 2}, {"G#", 3, 4}, {"Rest", 10,10}};
 struct nootType
 {
   String note;
@@ -150,7 +150,8 @@ void spelen(String notePlay)
   if (notePlay == "Rest")
   {
     Serial.print("resting");
-    delay((((1/(bpm / 60)) * 1000) - 650) + tempoChange);
+    Serial.println((((1/(bpm / 60)) * 1000) - 650) + tempoChange);
+    delay(draaiDelay + (((1/(bpm / 60)) * 1000) - 650) + tempoChange);
   }
   // spelen open snaren
   if (note.fret == 0)
@@ -538,7 +539,10 @@ void playReceivedNotes(int pitchChange){
            }
            break;
            
-        }
+        }else if(parsedNotes[i] == "Rest"){
+            spelen("Rest");
+            break;
+           }
       }
       //if(parsedNotes[i] == "D3"){
       //delay(100);

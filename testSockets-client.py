@@ -55,6 +55,7 @@ def my_message(data):
 @sio.event
 def disconnect():
     print('disconnected from server')
+    connected = False
     #put light out when disconnected
 
 connected = False
