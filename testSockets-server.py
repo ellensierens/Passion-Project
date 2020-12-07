@@ -20,6 +20,8 @@ from scipy.io.wavfile import write
 import serial
 import time
 
+#import hashlib
+
 import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
 
 GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
@@ -31,13 +33,18 @@ app = socketio.WSGIApp(sio, static_files={
     '/': {'content_type': 'text/html', 'filename': 'index.html'}
 })
 
-arduino = serial.Serial('/dev/ttyACM0',9600)
+arduino = serial.Serial('/dev/ttyUSBB',9600)
 time.sleep(0.1) #wait for serial to open
 
-uno = serial.Serial('/dev/ttyACM1',9600)
+uno = serial.Serial('/dev/ttyUSBC',9600)
 time.sleep(0.1) #wait for serial to open
 
-model = hub.load("https://tfhub.dev/google/spice/2")
+#lokaal inladen tfhub script
+#os.environ["TFHUB_CACHE_DIR"] = '/tmp/tfhub'
+#handle = "https://tfhub.dev/google/spice/2"
+#hashlib.sha1(handle.encode("utf8")).hexdigest()
+
+model = hub.load("/home/pi/model")
 print('model is loaded')
 
 #exec(open('./testSockets-client.py').read())

@@ -17,6 +17,8 @@ int teller = 0;
 String bpmStr;
 float bpm;
 
+bool replay;
+
 int val;
 int amountReplays;
 int valPotReplay;
@@ -56,14 +58,16 @@ struct nootType
 
 nootType note;
 
-struct nootType notes[] = {{"C3", 2, 0}, {"C#3", 4, 4}, {"D3", 2, 2}, {"D#3", 2, 3}, {"E3", 3, 0}, {"F3", 3, 1}, {"F#3", 3, 2}, {"G3", 1, 0}, {"G#3", 3, 4}, {"A3", 4, 0}, {"A#3", 4, 1}, {"B3", 1, 4}, {"C4", 4, 3}, {"Rest", 0, 0}};
+struct nootType notes[] = {{"C3", 2, 0}, {"C#3", 4, 4}, {"D3", 2, 2}, {"D#3", 2, 3}, {"E3", 3, 0}, {"F3", 3, 1}, {"F#3", 3, 2}, {"G3", 1, 0}, {"G#3", 3, 4}, {"A3", 4, 0}, {"A#3", 4, 1}, {"B3", 1, 4}, {"C4", 4, 3}};
+
+//test alle noten: 100;C3,C#3,D3,D#3,E3,F3,F#3,G3,G#3,A3,A#3,B3,C4,
 
 int posG = 0;
 int posA = 0;
 int posE = 0;
 int posC = 0;
 
-int draaiDelay = 600;
+int draaiDelay = 650;
 
 // twelve servo objects can be created on most boards
 
@@ -83,6 +87,8 @@ void setup()
   valPotPitch = 0;
   pitchChange = 0;
   oldPitchChange = 0;
+
+  replay = false;
 
   // attach servos to pin
   pluckG.attach(4);
@@ -141,9 +147,10 @@ void spelen(String notePlay)
   note = searchNote(notePlay);
 
   Serial.println("note to play: " + note.note + " string: " + note.snaar + " fret: " + note.fret);
-  if (note.note == "Rest")
+  if (notePlay == "Rest")
   {
-    delay((((1/(bpm / 60)) * 1000) - 600) + tempoChange);
+    Serial.print("resting");
+    delay((((1/(bpm / 60)) * 1000) - 650) + tempoChange);
   }
   // spelen open snaren
   if (note.fret == 0)
@@ -382,6 +389,7 @@ void loop()
   //Serial.println(parsedNotes[0]);
   val = digitalRead(10);
   if(val == HIGH){
+    replay = true;
     Serial.print("button pushed");
     playReceivedNotes(pitchChange);
   }
@@ -393,7 +401,7 @@ String leesVanPi()
   if (Serial.available() > 0)
   {
     // incomingNotes[0] = "";
-    delay(1000); //wait for all data to come throug; serial continues through delay
+    delay(1500); //wait for all data to come throug; serial continues through delay
     while (Serial.available() > 0)
     {
       msg += (char)Serial.read();
@@ -460,7 +468,6 @@ void readSerialPort()
     bpm = bpmStr.toInt();
     Serial.print((bpm / 60) * 1000 - 600);
     //char myString[4] = "sing";
-    Serial1.write("sing");
     //Serial.println("bpm int :" + (bpm/60)*1000-600);
     playReceivedNotes(pitchChange);
   }
@@ -471,11 +478,12 @@ void readSerialPort()
 }
 
 void playReceivedNotes(int pitchChange){
+  Serial1.write("sing");
      Serial.print("tempoChange: ");
      Serial.print((((1/(bpm / 60)) * 1000) - 600));
 
-
-     valPotReplay = analogRead(A0);
+    if(replay == true){
+           valPotReplay = analogRead(A0);
     //Serial.println(valPotReplay);
     amountReplays = map(valPotReplay, 0, 1023, 1, 10);
     //Serial.println(amountReplays);
@@ -487,9 +495,21 @@ void playReceivedNotes(int pitchChange){
     oldPitchChange = pitchChange;
     pitchChange = map(valPotPitch, 0, 1023, 0, 12);
     //int factor = pitchChange/12;
+    }else {
+      amountReplays = 1;
+      tempoChange = 0;
+      pitchChange = 0;
+    }
+
+
+
+      Serial.print("potentios: ");
+  Serial.print(valPotReplay);
+  Serial.print(tempoChange);
+  Serial.println(valPotPitch);
 
     Serial.print("pitchChange new: ");
-    Serial.println(pitchChange);
+    Serial.println(valPotPitch);
 
     Serial.print("extra delay: ");
     Serial.println((((1/(bpm / 60)) * 1000) - 600));
@@ -503,15 +523,18 @@ void playReceivedNotes(int pitchChange){
         for (int j = 0; j < sizeof(notes) / sizeof(notes[0]); j++){
            //Serial.println("ready to play: " + parsedNotes[i]);
            if(parsedNotes[i] == notes[j].note){
-           int pitch = (pitchChange + j) % 12 ;
-           Serial.print("pitch is: ");
-           Serial.println(pitch);
+           int pitch = (pitchChange + j) % 13 ;
+           Serial.print("note to play: ");
+           Serial.println(parsedNotes[i]);
+           Serial.println(notes[pitch].note);
            spelen(notes[pitch].note);
-           if ((((1/(bpm / 60)) * 1000) - 600) >= 0)
+           if ((((1/(bpm / 60)) * 1000) - 650) >= 0)
            {                
            Serial.print("tempoChange: ");
-           Serial.println((((1/(bpm / 60)) * 1000) - 600) + tempoChange);
-            delay((((1/(bpm / 60)) * 1000) - 600) + tempoChange);
+           Serial.println((((1/(bpm / 60)) * 1000) - 650) + tempoChange);
+            delay((((1/(bpm / 60)) * 1000) - 650) + tempoChange);
+           }else {
+            delay(50);
            }
            break;
            
@@ -525,6 +548,7 @@ void playReceivedNotes(int pitchChange){
      }
       if(t == amountReplays-1){
       Serial1.write("stop");
+      replay = false;
     }
     }
      
