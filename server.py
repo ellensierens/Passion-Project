@@ -11,7 +11,6 @@ import statistics
 from pydub import AudioSegment
 from scipy.io import wavfile
 from IPython.display import Audio, Javascript
-# import matplotlib.pyplot as plt
 import music21
 import sounddevice as sd
 from scipy.io.wavfile import write
@@ -39,15 +38,8 @@ time.sleep(0.1) #wait for serial to open
 uno = serial.Serial('/dev/ttyUSBC',9600)
 time.sleep(0.1) #wait for serial to open
 
-#lokaal inladen tfhub script
-#os.environ["TFHUB_CACHE_DIR"] = '/tmp/tfhub'
-#handle = "https://tfhub.dev/google/spice/2"
-#hashlib.sha1(handle.encode("utf8")).hexdigest()
-
 model = hub.load("/home/pi/model")
 print('model is loaded')
-
-#exec(open('./testSockets-client.py').read())
 
 @sio.event
 def connect(sid, environ):
@@ -87,9 +79,6 @@ def my_message(sid, data):
         audio.export(output_file, format="wav")
         return output_file
 
-    # Converting to the expected format for the model
-    # in all the input 4 input method before, the uploaded file name is at
-    # the variable uploaded_file_name
     converted_audio_file = convert_audio_for_model("recorded_audio.wav")
 
     # Loading audio samples from the wav file:
