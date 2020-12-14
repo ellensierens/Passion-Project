@@ -42,10 +42,10 @@ Servo fret2;
 Servo fret3;
 Servo fret4;
 
-int offsetG = -14;
-int offsetC = 5;
-int offsetE = 5;
-int offsetA = -11;
+int offsetG = -8;
+int offsetC = 31;
+int offsetE = -13;
+int offsetA = 6;
 
 //opvullen notes array {noot, snaar nr, fret nr}
 //int notes[17][3] = {{A, 4, 0}, {B, 1, 4}, {"C", 2, 0}, {"D", 2, 2}, {"E", 3, 0}, {"F", 3, 1}, {"G", 1, 0}, {"Ab", 3, 4}, {"A#", 4, 1}, {"Bb", 4, 1}, {"C#", 4, 4}, {"Db", 4, 4}, {"D#", 2, 3}, {"Eb", 2, 3}, {"F#", 3, 2}, {"Gb", 3, 2}, {"G#", 3, 4}, {"Rest", 10,10}};
@@ -58,16 +58,16 @@ struct nootType
 
 nootType note;
 
-struct nootType notes[] = {{"C3", 2, 0}, {"C#3", 4, 4}, {"D3", 2, 2}, {"D#3", 2, 3}, {"E3", 3, 0}, {"F3", 3, 1}, {"F#3", 3, 2}, {"G3", 1, 0}, {"G#3", 3, 4}, {"A3", 4, 0}, {"A#3", 4, 1}, {"B3", 1, 4}, {"C4", 4, 3}};
+struct nootType notes[] = {{"C3", 2, 0}, {"C#3", 2, 1}, {"D3", 2, 2}, {"D#3", 2, 3}, {"E3", 3, 0}, {"F3", 3, 1}, {"F#3", 3, 2}, {"G3", 1, 0}, {"G#3", 3, 4}, {"A3", 4, 0}, {"A#3", 4, 1}, {"B3", 1, 4}, {"C4", 4, 3}, {"C#4", 4, 4}};
 
-//test alle noten: 100;C3,C#3,D3,D#3,E3,F3,F#3,G3,G#3,A3,A#3,B3,C4,
+//test alle noten: 100;C3,C#3,D3,D#3,E3,F3,F#3,G3,G#3,A3,A#3,B3,C4,C#4,
 
 int posG = 0;
 int posA = 0;
 int posE = 0;
 int posC = 0;
 
-int draaiDelay = 650;
+int draaiDelay = 600;
 
 // twelve servo objects can be created on most boards
 
@@ -164,18 +164,22 @@ void spelen(String notePlay)
     if (note.snaar == 1)
     {
       pluckGFunction();
+      delay(100);
     }
     else if (note.snaar == 2)
     {
       pluckCFunction();
+      delay(100);
     }
     else if (note.snaar == 3)
     {
       pluckEFunction();
+      delay(100);
     }
     else if (note.snaar == 4)
     {
       pluckAFunction();
+      delay(100);
     }
   }
   else if (note.fret == 1)
@@ -189,24 +193,28 @@ void spelen(String notePlay)
       fret1.write(45);
       delay(draaiDelay);
       pluckGFunction();
+      delay(100);
     }
     else if (note.snaar == 2)
     {
       fret1.write(90);
       delay(draaiDelay);
       pluckCFunction();
+      delay(100);
     }
     else if (note.snaar == 3)
     {
       fret1.write(135);
       delay(draaiDelay);
       pluckEFunction();
+      delay(100);
     }
     else if (note.snaar == 4)
     {
       fret1.write(180);
       delay(draaiDelay);
       pluckAFunction();
+      delay(100);
     }
   }
   else
@@ -221,24 +229,28 @@ void spelen(String notePlay)
       fret2.write(135);
       delay(draaiDelay);
       pluckGFunction();
+      delay(100);
     }
     else if (note.snaar == 2)
     {
       fret2.write(90);
       delay(draaiDelay);
       pluckCFunction();
+      delay(100);
     }
     else if (note.snaar == 3)
     {
       fret2.write(45);
       delay(draaiDelay);
       pluckEFunction();
+      delay(100);
     }
     else if (note.snaar == 4)
     {
       fret2.write(0);
       delay(draaiDelay);
       pluckAFunction();
+      delay(100);
     }
   }
   else
@@ -253,24 +265,28 @@ void spelen(String notePlay)
       fret3.write(45);
       delay(draaiDelay);
       pluckGFunction();
+      delay(100);
     }
     else if (note.snaar == 2)
     {
       fret3.write(90);
       delay(draaiDelay);
       pluckCFunction();
+      delay(100);
     }
     else if (note.snaar == 3)
     {
       fret3.write(135);
       delay(draaiDelay);
       pluckEFunction();
+      delay(100);
     }
     else if (note.snaar == 4)
     {
       fret3.write(180);
       delay(draaiDelay);
       pluckAFunction();
+      delay(100);
     }
   }
   else
@@ -285,24 +301,28 @@ void spelen(String notePlay)
       fret4.write(135);
       delay(draaiDelay);
       pluckGFunction();
+      delay(100);
     }
     else if (note.snaar == 2)
     {
       fret4.write(90);
       delay(draaiDelay);
       pluckCFunction();
+      delay(100);
     }
     else if (note.snaar == 3)
     {
       fret4.write(45);
       delay(draaiDelay);
       pluckEFunction();
+      delay(100);
     }
     else if (note.snaar == 4)
     {
       fret4.write(0);
       delay(draaiDelay);
       pluckAFunction();
+      delay(100);
     }
   }
   else
@@ -317,14 +337,14 @@ void pluckCFunction()
   if (posC == 0)
   {
 
-    pluckC.write(117 + offsetC);
+    pluckC.write(107 + offsetC);
     posC = 1;
   }
   else
 
       if (posC == 1)
   {
-    pluckC.write(88 + offsetC);
+    pluckC.write(93 + offsetC);
     posC = 0;
   }
 }
@@ -335,14 +355,14 @@ void pluckGFunction()
   if (posG == 0)
   {
 
-    pluckG.write(117 + offsetG);
+    pluckG.write(108 + offsetG);
     posG = 1;
   }
   else
 
       if (posG == 1)
   {
-    pluckG.write(88 + offsetG);
+    pluckG.write(92 + offsetG);
     posG = 0;
   }
 }
@@ -353,14 +373,14 @@ void pluckEFunction()
   if (posE == 0)
   {
 
-    pluckE.write(117 + offsetE);
+    pluckE.write(108 + offsetE);
     posE = 1;
   }
   else
 
       if (posE == 1)
   {
-    pluckE.write(88 + offsetE);
+    pluckE.write(92 + offsetE);
     posE = 0;
   }
 }
@@ -371,14 +391,14 @@ void pluckAFunction()
   if (posA == 0)
   {
 
-    pluckA.write(117 + offsetA);
+    pluckA.write(108 + offsetA);
     posA = 1;
   }
   else
 
       if (posA == 1)
   {
-    pluckA.write(88 + offsetA);
+    pluckA.write(92 + offsetA);
     posA = 0;
   }
 }
@@ -479,9 +499,10 @@ void readSerialPort()
 }
 
 void playReceivedNotes(int pitchChange){
-  Serial1.write("sing");
+  Serial1.write(3);
      Serial.print("tempoChange: ");
-     Serial.print((((1/(bpm / 60)) * 1000) - 600));
+     Serial.print((((1/(bpm / 60)) * 1000) - 650));
+
 
     if(replay == true){
            valPotReplay = analogRead(A0);
@@ -491,10 +512,13 @@ void playReceivedNotes(int pitchChange){
     
     tempoChange = analogRead(A1); 
     //Serial.println(tempoChange);
+         Serial.print("tempoChange extra: ");
+     Serial.print(tempoChange);
     
     valPotPitch = analogRead(A2);
     oldPitchChange = pitchChange;
     pitchChange = map(valPotPitch, 0, 1023, 0, 12);
+    replay = false;
     //int factor = pitchChange/12;
     }else {
       amountReplays = 1;
@@ -524,7 +548,7 @@ void playReceivedNotes(int pitchChange){
         for (int j = 0; j < sizeof(notes) / sizeof(notes[0]); j++){
            //Serial.println("ready to play: " + parsedNotes[i]);
            if(parsedNotes[i] == notes[j].note){
-           int pitch = (pitchChange + j) % 13 ;
+           int pitch = (pitchChange + j) % 14 ;
            Serial.print("note to play: ");
            Serial.println(parsedNotes[i]);
            Serial.println(notes[pitch].note);
@@ -535,7 +559,7 @@ void playReceivedNotes(int pitchChange){
            Serial.println((((1/(bpm / 60)) * 1000) - 650) + tempoChange);
             delay((((1/(bpm / 60)) * 1000) - 650) + tempoChange);
            }else {
-            delay(50);
+            delay(50 + tempoChange);
            }
            break;
            
@@ -551,8 +575,8 @@ void playReceivedNotes(int pitchChange){
 
      }
       if(t == amountReplays-1){
-      Serial1.write("stop");
-      replay = false;
+      Serial.write("stop");
+      Serial1.write(4);
     }
     }
      

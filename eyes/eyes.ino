@@ -5,22 +5,29 @@
 
     int BPM = 400;
 
-    bool start = true;
-    bool socketConnected = false;
-    bool hasBeenConnected = false;
-    bool inference = false;
-    bool sing = false;
+    bool start;
+    bool socketConnected;
+    //bool hasBeenConnected = false;
+    bool inference;
+    bool sing;
 
     CRGB leds[NUM_LEDS];
 
     void setup() { 
       Serial.begin(9600);
       Serial1.begin(9600);
+
+      
+    start = true;
+    socketConnected = false;
+    //hasBeenConnected = false;
+    inference = false;
+    sing = false;
       
       FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
       FastLED.addLeds<NEOPIXEL, DATA_PIN2>(leds, NUM_LEDS);
 
-      FastLED.setBrightness(10);
+      FastLED.setBrightness(5);
    }
 
    void loop() { 
@@ -53,18 +60,23 @@
       laden_12();
       delay(BPM);
     } else if(socketConnected) {
+      FastLED.clear();
+      FastLED.show(); 
+      delay(BPM/2);
       open_1();
-      delay(BPM);
+      delay(BPM/2);
       open_2();
-      delay(BPM);
+      delay(BPM/2);
       open_3();
-      delay(BPM);
+      delay(BPM/2);
       open_4();
       delay(BPM*3);
       open_3();
-      delay(BPM);
+      delay(BPM/2);
       open_2();
-      delay(BPM);
+      delay(BPM/2);
+      open_1();
+      delay(BPM/2);
     } else if(inference){
       kijken_1();
       delay(BPM);
@@ -96,24 +108,27 @@
 
    void readSerialPort (){
     //Serial.println("reading");
-    String msg ="";
+    int num = 0;
+    String msg = "";
     if(Serial.available()>0){
+      Serial.println("serial0");
       delay(10);
       while(Serial.available()>0){
         msg += (char)Serial.read();
       }
     }
     if(Serial1.available()>0){
+      Serial.println("serial1");
       delay(10);
       while(Serial1.available()>0){
-        msg += (char)Serial1.read();
+        num = Serial1.read();
       }
     }
           Serial.println(msg);
-     if(msg == "connected" && hasBeenConnected == false){
+     if(msg == "connect"){
       start = false;
       socketConnected = true;
-      hasBeenConnected = true;
+      //hasBeenConnected = true;
     
       inference = false;
       sing = false;
@@ -124,14 +139,14 @@
 
       start = false;
       sing = false;
-     } else if(msg == "sing"){
+     } else if(num == 3){
      inference = false;
      sing = true;
 
      start = false;
      socketConnected = false;
      }
-     else if(msg == "stop"){
+     else if(num == 4){
      socketConnected = true;
      sing = false;
 
@@ -383,20 +398,21 @@
         leds[24] = CRGB::White;
         leds[25] = CRGB::White;
         leds[26] = CRGB::White;
-        leds[27] = CRGB::White;
-        leds[28] = CRGB::White;
         leds[29] = CRGB::White;
         leds[30] = CRGB::White;
         leds[31] = CRGB::White;
         leds[32] = CRGB::White;
         leds[33] = CRGB::White;
         leds[34] = CRGB::White;
-        leds[35] = CRGB::White;
-        leds[36] = CRGB::White;
         leds[37] = CRGB::White;
         leds[38] = CRGB::White;
         leds[39] = CRGB::White;
         FastLED.show(); 
+    }
+
+         void open_0 () {
+      FastLED.clear(); 
+
     }
 
      void open_2 () {

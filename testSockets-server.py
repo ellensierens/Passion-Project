@@ -54,7 +54,7 @@ def connect(sid, environ):
     print('connect ', sid)
     if uno.isOpen():
         print("connected")
-        msg = "connected"
+        msg = "connect"
         uno.write(msg.encode())
 
 
