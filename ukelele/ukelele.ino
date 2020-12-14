@@ -1,10 +1,3 @@
-/* Sweep
- by BARRAGAN <http://barraganstudio.com>
- This example code is in the public domain.
- modified 8 Nov 2013
- by Scott Fitzgerald
- http://www.arduino.cc/en/Tutorial/Sweep
-*/
 
 #include <Servo.h>
 
@@ -47,8 +40,7 @@ int offsetC = 31;
 int offsetE = -13;
 int offsetA = 6;
 
-//opvullen notes array {noot, snaar nr, fret nr}
-//int notes[17][3] = {{A, 4, 0}, {B, 1, 4}, {"C", 2, 0}, {"D", 2, 2}, {"E", 3, 0}, {"F", 3, 1}, {"G", 1, 0}, {"Ab", 3, 4}, {"A#", 4, 1}, {"Bb", 4, 1}, {"C#", 4, 4}, {"Db", 4, 4}, {"D#", 2, 3}, {"Eb", 2, 3}, {"F#", 3, 2}, {"Gb", 3, 2}, {"G#", 3, 4}, {"Rest", 10,10}};
+
 struct nootType
 {
   String note;
@@ -123,10 +115,8 @@ void setup()
 
 nootType searchNote(String notePlay)
 {
-  //Serial.print(sizeof (notes)/ sizeof (notes[0]));
   for (int i = 0; i < sizeof(notes) / sizeof(notes[0]); i++)
   {
-    //Serial.print(typeof(notes[i]))
     Serial.println("searching... " + notes[i].note + i);
     if (notes[i].note == notePlay)
     {
@@ -405,9 +395,7 @@ void pluckAFunction()
 
 void loop()
 {
-  //Serial.println("gestart");
   readSerialPort();
-  //Serial.println(parsedNotes[0]);
   val = digitalRead(10);
   if(val == HIGH){
     replay = true;
@@ -421,14 +409,11 @@ String leesVanPi()
   String msg = "";
   if (Serial.available() > 0)
   {
-    // incomingNotes[0] = "";
     delay(1500); //wait for all data to come throug; serial continues through delay
     while (Serial.available() > 0)
     {
       msg += (char)Serial.read();
     }
-    // Serial.flush();
-    // Serial.println(msg);
     clearParsedNotes(); //clear the parsednotes array before returning new raw values
     return msg;
   }
@@ -442,9 +427,7 @@ int zetOmNaarArray(String omTeZetten)
   bpm=0;
   for (int i = 0; i < omTeZetten.length(); i++)
   {
-    // print de letter
-    //Serial.println("dit moet ik omzetten: "+omTeZetten[i]);
-    //delay(100);
+
     // controleer of het een komma is
     if (omTeZetten[i] == ';')
     {
@@ -458,12 +441,10 @@ int zetOmNaarArray(String omTeZetten)
     {
       if (bpmSaved == false)
       {
-        //Serial.print("saved: " + bpmSaved);
         bpmStr += omTeZetten[i];
       }
       else if (bpmSaved == true)
       {
-        //Serial.print("saved: " + bpmSaved);
         parsedNotes[teller] += omTeZetten[i];
       }
     }
@@ -477,25 +458,16 @@ int zetOmNaarArray(String omTeZetten)
 
 void readSerialPort()
 {
-  //Serial.print("listening for serial port");
   String gelezen = "";
   gelezen = leesVanPi();
-  //Serial.print(msg[1]);
   if (gelezen != "")
   {
     Serial.println("serial: " + gelezen);
     int aantal = zetOmNaarArray(gelezen);
-    //Serial.print("bpm: "+bpmStr);
     bpm = bpmStr.toInt();
     Serial.print((bpm / 60) * 1000 - 600);
-    //char myString[4] = "sing";
-    //Serial.println("bpm int :" + (bpm/60)*1000-600);
     playReceivedNotes(pitchChange);
   }
-  //if(teller>= 1){
-  //Serial.print("in if voor spelen printen");
-
-  //}
 }
 
 void playReceivedNotes(int pitchChange){
@@ -506,12 +478,9 @@ void playReceivedNotes(int pitchChange){
 
     if(replay == true){
            valPotReplay = analogRead(A0);
-    //Serial.println(valPotReplay);
     amountReplays = map(valPotReplay, 0, 1023, 1, 10);
-    //Serial.println(amountReplays);
     
     tempoChange = analogRead(A1); 
-    //Serial.println(tempoChange);
          Serial.print("tempoChange extra: ");
      Serial.print(tempoChange);
     
@@ -519,7 +488,6 @@ void playReceivedNotes(int pitchChange){
     oldPitchChange = pitchChange;
     pitchChange = map(valPotPitch, 0, 1023, 0, 12);
     replay = false;
-    //int factor = pitchChange/12;
     }else {
       amountReplays = 1;
       tempoChange = 0;
@@ -546,7 +514,6 @@ void playReceivedNotes(int pitchChange){
             for (int i = 0; i < teller; i++)
     {
         for (int j = 0; j < sizeof(notes) / sizeof(notes[0]); j++){
-           //Serial.println("ready to play: " + parsedNotes[i]);
            if(parsedNotes[i] == notes[j].note){
            int pitch = (pitchChange + j) % 14 ;
            Serial.print("note to play: ");
@@ -568,10 +535,6 @@ void playReceivedNotes(int pitchChange){
             break;
            }
       }
-      //if(parsedNotes[i] == "D3"){
-      //delay(100);
-      //parsedNotes[i] = ""; //maak functie clearArray(arr) en gebruik voor vernieuwen
-      //}
 
      }
       if(t == amountReplays-1){

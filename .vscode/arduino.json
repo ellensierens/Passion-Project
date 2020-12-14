@@ -1,5 +1,5 @@
 {
-    "sketch": "uke.ino",
+    "sketch": "ukelele/ukelele.ino",
     "port": "/dev/tty.usbmodem14101",
     "programmer": "AVR ISP",
     "board": "arduino:avr:mega",
