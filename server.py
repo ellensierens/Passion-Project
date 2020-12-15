@@ -38,7 +38,7 @@ time.sleep(0.1) #wait for serial to open
 uno = serial.Serial('/dev/ttyUSBC',9600)
 time.sleep(0.1) #wait for serial to open
 
-model = hub.load("/home/pi/model")
+model = hub.load("model/spice_2")
 print('model is loaded')
 
 @sio.event
